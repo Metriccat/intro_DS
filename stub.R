@@ -9,8 +9,7 @@ library(Hmisc)
 
 # chargement des donnees
 
-dossier_data = "FRENCHDATA/ecole42_10052016"
-dossier_data = "E:/ecole42_10052016"
+dossier_data = "/Users/saskia/programming/ecole42_10052016"
 chemin_train = paste0(dossier_data, "/boites_medicaments_train.csv")
 raw = read.table(chemin_train, sep = ";", header = T, fill = T, quote = "", encoding = 'UTF-8')
 
@@ -21,12 +20,14 @@ mape_error = function(y, ypred){mean(abs((y - ypred)/y))*100}
 # exploration
 
 str(raw)
+summary(raw)
 ggplot(raw, aes(prix)) + geom_histogram(binwidth = 1) # => prendre le log du prix pour le modele !
+ggplot(raw, aes(log(prix))) + geom_histogram(binwidth = 1) # => prendre le log du prix pour le modele !
 
 # definition train/test
 
 # partition equilibree sur log(prix)
-train_test = createDataPartition(log(raw$prix), times = 2, p = 0.7, list = F) 
+train_test = createDataPartition(log(raw$prix), times = 1, p = 0.7, list = F) 
 train = raw[train_test, ]
 test = raw[-train_test, ]
 # Cree une variable categorie pour pouvoir separer les datasets apres la preparation des donnees
